@@ -127,13 +127,72 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Cards.cpp" />
     <ClCompile Include="DrawingUtilNG.cpp" />
     <ClCompile Include="fssimplewindow.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="yspng.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Cards.h" />
     <ClInclude Include="DrawingUtilNG.h" />
     <ClInclude Include="fssimplewindow.h" />
+    <ClInclude Include="PaintCards.h" />
+    <ClInclude Include="yspng.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="10_of_clubs.png" />
+    <Image Include="10_of_diamonds.png" />
+    <Image Include="10_of_hearts.png" />
+    <Image Include="10_of_spades.png" />
+    <Image Include="2_of_clubs.png" />
+    <Image Include="2_of_diamonds.png" />
+    <Image Include="2_of_hearts.png" />
+    <Image Include="2_of_spades.png" />
+    <Image Include="3_of_clubs.png" />
+    <Image Include="3_of_diamonds.png" />
+    <Image Include="3_of_hearts.png" />
+    <Image Include="3_of_spades.png" />
+    <Image Include="4_of_clubs.png" />
+    <Image Include="4_of_diamonds.png" />
+    <Image Include="4_of_hearts.png" />
+    <Image Include="4_of_spades.png" />
+    <Image Include="5_of_clubs.png" />
+    <Image Include="5_of_diamonds.png" />
+    <Image Include="5_of_hearts.png" />
+    <Image Include="5_of_spades.png" />
+    <Image Include="6_of_clubs.png" />
+    <Image Include="6_of_diamonds.png" />
+    <Image Include="6_of_hearts.png" />
+    <Image Include="6_of_spades.png" />
+    <Image Include="7_of_clubs.png" />
+    <Image Include="7_of_diamonds.png" />
+    <Image Include="7_of_hearts.png" />
+    <Image Include="7_of_spades.png" />
+    <Image Include="8_of_clubs.png" />
+    <Image Include="8_of_diamonds.png" />
+    <Image Include="8_of_hearts.png" />
+    <Image Include="8_of_spades.png" />
+    <Image Include="9_of_clubs.png" />
+    <Image Include="9_of_diamonds.png" />
+    <Image Include="9_of_hearts.png" />
+    <Image Include="9_of_spades.png" />
+    <Image Include="ace_of_clubs.png" />
+    <Image Include="ace_of_diamonds.png" />
+    <Image Include="ace_of_hearts.png" />
+    <Image Include="ace_of_spades.png" />
+    <Image Include="jack_of_clubs.png" />
+    <Image Include="jack_of_diamonds.png" />
+    <Image Include="jack_of_hearts.png" />
+    <Image Include="jack_of_spades.png" />
+    <Image Include="king_of_clubs.png" />
+    <Image Include="king_of_diamonds.png" />
+    <Image Include="king_of_hearts.png" />
+    <Image Include="king_of_spades.png" />
+    <Image Include="queen_of_clubs.png" />
+    <Image Include="queen_of_diamonds.png" />
+    <Image Include="queen_of_hearts.png" />
+    <Image Include="queen_of_spades.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

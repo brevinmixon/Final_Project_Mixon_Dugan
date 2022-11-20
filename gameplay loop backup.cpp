@@ -18,11 +18,6 @@
 * Create some marker for whichever player is going, maybe the other cards dim and the players are bright
 * Change the input()s to FSKEY inputs once the graphics get going, switch statements
 * Upload PNG of the back of a playing card
-* 
-* Maybe I should just have a vector that matches Players that stores all the cards so it doesnt have to run
-* FindPNG every loop. Only when a card is appended, will I use FingPNG to add the file
-* 
-* That could be it, it could be tripping over itself on the load time
 */
 
 #pragma warning(disable:4996)
@@ -52,9 +47,6 @@ void PaintCards();
 int NumPlayers = 0;
 int Phase = 0;
 int key = FSKEY_NULL;
-int curPlayer = 0;
-int curCard = 0;
-int choice = -1;
 YsRawPngDecoder png[52];
 
 vector<string> Card;
@@ -101,6 +93,7 @@ int main(void) {
 			key = FsInkey();
 			switch (key) { //Does a switch statement stop the gameplay loop. Maybe it needs to be able to run thorough
 				case FSKEY_1:
+					cout << key;
 					NumPlayers = 1;
 					break;
 				case FSKEY_2:
@@ -144,39 +137,52 @@ int main(void) {
 		}
 		else if (Phase == 1) { //Player Phase
 			//Asks each player if they would like to hit or stand, 1 for hit, 2 for stand
-			//This is gonna need a slightly more complicated locking system where it keeps track of which pleyer is up
-			// and which card is up
-			//If I want to play test before figuring out the cards, I'll need to return cout cards but lock after one use
-					
-			FsPollDevice();
-			key = FsInkey();
-			switch (key) { 
-				case FSKEY_1:
-					Card = deck.back();// take top card of deck
-					deck.pop_back(); // erase top card of take
-					Players[curPlayer].push_back(Card); //give top card to the Hand
-					paint();
-					glFlush();
-					if (GetScore(Players[curPlayer]) > 21) {
-						choice = 2; //If player busts, their turn ends, no questions asked
-						//does key auto lock or keep going, key =FS_NULL;
+			//If we have time, we can implement other features like Double down or Split
+			for (int i = 0; i < NumPlayers; i++) { //will the gameplay loop screw up this for loop? I might need more locks 
+				//based on player and card specifally
+				int choice = 0;
+				while (choice != 2) {
+					cout << "Player " << i + 1 << " " << "has:  ";
+					for (int j = 0; j < Players[i].size(); j++) {
+						cout << Players[i][j][0] << "  ";
 					}
-					key = FSKEY_NULL;
-					break;
-				case FSKEY_2:
-					curCard = 0;
-					curPlayer++;
-					key = FSKEY_NULL;
-					break;
-			}
-			if (curPlayer==Players.size())
-				Phase = 2; //All Players finished, dealer phase starts
+					cout << endl;
+					cout << "Press 1 to hit, 2 to stand" << endl;
+					FsPollDevice();
+					key = FsInkey();
+					switch (key) { 
+					case FSKEY_1:
+						cout << key;
+						choice = 1;
+						break;
+					case FSKEY_2:
+						choice = 2;
+						break;
+					}
+					if (choice == 1) {
+						Card = deck.back();// take top card of deck
+						deck.pop_back(); // erase top card of take
+						Players[i].push_back(Card); //give top card to the Hand
+						paint();
+						glFlush();
+						if (GetScore(Players[i]) > 21) {
+							choice = 2; //If player busts, their turn ends, no questions asked
+							cout << "Player " << i + 1 << " " << "busted with " << GetScore(Players[i]) << endl << endl;
+						}
+						choice = 0; //lock
+					}
+					else if (choice == 2) {
+						cout << "Player " << i + 1 << " " << "stood at " << GetScore(Players[i]) << endl << endl;
+						choice = 0; //lock
+					}
 
-			Phase = 2; //remove !!!!!!!???????????!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				}
+			}
+			Phase = 2; //Player pahse ends, dealer phase starts
 		}
 		else if (Phase == 2) { //Dealer Phase
 			cout << endl << "Dealer" << endl;
-			while (GetScore(Dealer) <= 17) { //This shouldn't be a problem, it should go through once and lock
+			while (GetScore(Dealer) <= 17) {
 				cout << "Dealer Hits" << endl;
 				Card = deck.back();// take top card of deck
 				deck.pop_back(); // erase top card of take
@@ -386,8 +392,9 @@ void PaintCards() {
 	int index;
 
 	//Players
-	if (Phase < 1) return;
+	if (Phase < 0) return;
 
+	double angle = 120 /( NumPlayers+1);
 	for (int i = 0; i < NumPlayers; i++) {
 		for (int j = 0; j < Players[i].size(); j++) {
 			index= FindPNG(Players[i][j][0], Players[i][j][1]); //find PNG using rank and suit
