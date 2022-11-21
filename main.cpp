@@ -22,7 +22,7 @@
 * Maybe I should just have a vector that matches Players that stores all the cards so it doesnt have to run
 * FindPNG every loop. Only when a card is appended, will I use FingPNG to add the file
 * 
-* That could be it, it could be tripping over itself on the load time
+* Make sure that deck is truly random, when playing multiple rounds
 */
 
 #pragma warning(disable:4996)
@@ -150,17 +150,14 @@ int main(void) {
 					
 			FsPollDevice();
 			key = FsInkey();
-			switch (key) { 
+			if (GetScore(Players[curPlayer]) <= 21){
+				switch (key) {
 				case FSKEY_1:
 					Card = deck.back();// take top card of deck
 					deck.pop_back(); // erase top card of take
 					Players[curPlayer].push_back(Card); //give top card to the Hand
 					paint();
 					glFlush();
-					if (GetScore(Players[curPlayer]) > 21) {
-						choice = 2; //If player busts, their turn ends, no questions asked
-						//does key auto lock or keep going, key =FS_NULL;
-					}
 					key = FSKEY_NULL;
 					break;
 				case FSKEY_2:
@@ -168,11 +165,16 @@ int main(void) {
 					curPlayer++;
 					key = FSKEY_NULL;
 					break;
+				}
 			}
+			else {
+				curCard = 0;
+				curPlayer++;
+			}
+
 			if (curPlayer==Players.size())
 				Phase = 2; //All Players finished, dealer phase starts
 
-			Phase = 2; //remove !!!!!!!???????????!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		}
 		else if (Phase == 2) { //Dealer Phase
 			cout << endl << "Dealer" << endl;
@@ -219,13 +221,21 @@ int main(void) {
 			}
 
 
-			//Asks if the player wants to play again
+			//Asks if the player wants to play again, 0 for no, 1 for yes
 			int choice = -1;
-			while (choice < 0 || choice>1) {
-				cout << "Would you like to play again? Press 1 for yes, 0 for no";
-				cin >> choice;
-				if (choice == 1) Phase = 0;
-				else if (choice == 0) terminate = true;
+			FsPollDevice();
+			key = FsInkey();
+			switch (key) {
+			case FSKEY_1:
+				Phase = 0;
+				//create true reset function that resets global variables
+				curCard = 0;
+				curPlayer = 0;
+				
+				break;
+			case FSKEY_0:
+				terminate = true;
+				break;
 			}
 		}
 
@@ -390,11 +400,11 @@ void PaintCards() {
 
 	for (int i = 0; i < NumPlayers; i++) {
 		for (int j = 0; j < Players[i].size(); j++) {
-			index= FindPNG(Players[i][j][0], Players[i][j][1]); //find PNG using rank and suit
-			curCard = png[index];
+			//index= FindPNG(Players[i][j][0], Players[i][j][1]); //find PNG using rank and suit
+			//curCard = png[index];
 
 			glRasterPos2d(200+100*i+40*j, (double)(500-40*j));   //(x,y)
-			glDrawPixels(width, height, GL_RGBA, GL_UNSIGNED_BYTE, curCard.rgba); //some error with rgba function
+			glDrawPixels(width, height, GL_RGBA, GL_UNSIGNED_BYTE, png[0].rgba); //some error with rgba function
 			FsSleep(50);
 			//usleep(1);
 
