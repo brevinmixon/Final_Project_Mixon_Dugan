@@ -15,11 +15,5 @@
 
 using namespace std;
 
-//void Cards::Paint(vector<vector<vector<string>>> Players, vector<vector<string>> Dealer)
-//{
-	//int NumPlayers = Players.size();
-	//int Angle = 120 / NumPlayers; //Cards are in an arc of 120 degrees
-
-//}
 
 
