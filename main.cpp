@@ -400,6 +400,7 @@ void PaintCards() {
 	int DealerY = 50;
 	int PlayerX = 50;
 	int PlayerY = 400;
+	int Angle = 0;
 
 	//Players
 	if (Phase < 1) return;
@@ -417,6 +418,29 @@ void PaintCards() {
 	glColor4d(1.0, 1.0, 1.0, 1.0); // Current color is solid white
 
 	for (int i = 0; i < NumPlayers; i++) {
+		//offset and Angle
+		if (i == 0) {
+			PlayerY = 340;
+			Angle = 30;
+		}
+		else if (i == 1) {
+			PlayerY = 370;
+			Angle = 15;
+		}
+		else if (i == 2) {
+			PlayerY = 400;
+			Angle = 0;
+		}
+		else if (i == 3) {
+			PlayerY = 370;
+			Angle = -15;
+		}
+		else if (i == 4) {
+			PlayerY = 340;
+			Angle = -30;
+		}
+		//Angle didnt work
+
 		for (int j = 0; j < Players[i].size(); j++) {
 
 			glEnable(GL_TEXTURE_2D); // Turn on the texture mapping
@@ -426,13 +450,13 @@ void PaintCards() {
 
 			//Idk how this works but I will try the left corner as the reference point
 			glTexCoord2d(0.0, 0.0);
-			glVertex2d(PlayerX + 150 * i + 20 * j, PlayerY - 20 * j);
+			glVertex2d((PlayerX + 150 * i + 20 * j),( PlayerY - 20 * j));
 			glTexCoord2d(1.0, 0.0);
-			glVertex2d(PlayerX + width + 150 * i + 20 * j, PlayerY - 20 * j);  //top right? //100 wide?
+			glVertex2d((PlayerX + width + 150 * i + 20 * j), (PlayerY - 20 * j));  //top right? //100 wide?
 			glTexCoord2d(1.0, 1.0);
-			glVertex2d(PlayerX + width + 150 * i + 20 * j, PlayerY + height - 20 * j); //bottom right?
+			glVertex2d((PlayerX + width + 150 * i + 20 * j), (PlayerY + height - 20 * j)); //bottom right?
 			glTexCoord2d(0.0, 1.0);
-			glVertex2d(PlayerX + 150 * i + 20 * j, PlayerY + height - 20 * j); //bottom left?
+			glVertex2d((PlayerX + 150 * i + 20 * j),( PlayerY + height - 20 * j)); //bottom left?
 			glEnd();
 
 			//glVertex2d(400.0 + 200.0 * cos(angle - PI / 2.0), 300.0 - 200.0 * sin(angle - PI / 2.0)); //angles!!
@@ -460,11 +484,7 @@ void PaintCards() {
 		glTexCoord2d(0.0, 1.0);
 		glVertex2d(DealerX + 120 * j, DealerY + height); //bottom left?
 		glEnd();
-
-	}
-	for (int k=0 ; k < Dealer.size(); k++)
-	{
-		cout << Dealer[k][0] << "  " << Dealer[k][1] << endl;
+		//
 	}
 }
 
